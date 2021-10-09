@@ -16,15 +16,15 @@ void quickSortE(int* arr, int b, int e){
     if(b < j){quickSortE(arr, b, j);}
 }
 
-void solve(int* p, int *t, int m, int n){
+void solve(int* prcs, int *tim, int prcs_n, int task_n){
     int i = 0, j = 0;
-    while(i < n){
+    while(i < task_n){
         j = 0;
-        while (j < m && i < n){
-            p[j++] += t[i++];
+        while (j < prcs_n && i < task_n){
+            prcs[j++] += tim[i++];
         } j--;
-        while (j >= 0 && i < n){
-            p[j--] += t[i++];
+        while (j >= 0 && i < task_n){
+            prcs[j--] += tim[i++];
         }
     }
 }
@@ -35,25 +35,25 @@ int main(){
     f.open("file1", ios::in);
     if (!f) cerr << "No such file" << endl;
 
-    // m procesorów, n zadań
-    int m, n;
-    f >> m >> n;
-    int times[n], proc[m];
-    for (int i = 0; i < n; i++){ f >> times[i]; }
-    for (int i = 0; i < m; i++) proc[i] = 0;
+    // liczba procesorów, liczba zadań
+    int proc_num, tasks_num;
+    f >> proc_num >> tasks_num;
+    int times[tasks_num], procs[proc_num];
+    for (int i = 0; i < tasks_num; i++){ f >> times[i]; }
+    for (int i = 0; i < proc_num; i++) procs[i] = 0;
 
-    quickSortE(times, 0, n-1);
+    quickSortE(times, 0, tasks_num-1);
     clock_t start, stop;
     start = clock();
-    solve(proc, times, m, n);
+    solve(procs, times, proc_num, tasks_num);
     stop = clock();
-    
-    // cout << "Zadania: ";
-    // for (int i = 0; i < m; i++) cout << proc[i] << " ";
+	
+    cout << "Zadania: ";
+    for (int i = 0; i < proc_num; i++) cout << procs[i] << " ";
 
     double a_time = (double) (stop - start) / CLOCKS_PER_SEC;
     cout << "\nCzas wykonywania: " << setprecision(1) << a_time << endl;
-    cout << "Roznica czasu miedzy najdluzszym i najkrotszym zad: " << *max_element(proc, proc + m) - *min_element(proc, proc + m) << endl;
+    cout << "Roznica czasu miedzy najdluzszym i najkrotszym zad: " << *max_element(procs, procs + proc_num) - *min_element(procs, procs + proc_num) << endl;
 
     f.close();
     return 0;
