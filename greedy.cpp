@@ -47,7 +47,7 @@ int main(){
     start = clock();
     solve(proc, times, m, n);
     stop = clock();
-    
+    // kom    
     // cout << "Zadania: ";
     // for (int i = 0; i < m; i++) cout << proc[i] << " ";
 
