@@ -24,10 +24,7 @@ public:
             heapify(i);
         }
     }
-    void readHeap(){
-        for(int i = 0; i < size; i++){
-            cout << array[i] << " ";
-        }
-        cout << endl;
+    T operator[](int i){
+        return array[i];
     }
 };
