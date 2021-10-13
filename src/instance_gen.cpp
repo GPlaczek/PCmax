@@ -12,29 +12,22 @@ using namespace std;
 
 int main(){
     srand(time(NULL));
-    // m - liczba procesorow
-    // n - liczba zadan
-    int m, n;
-    // wspolczynnik fract = m/n
-    float fract = LO + (float) (rand()) / ((float) (RAND_MAX / (HI - LO))); // (LO, Hi)
+    int proc_n, tasks_n; // liczba zadan, procesorow
+    float fract = LO + (float) (rand()) / ((float) (RAND_MAX / (HI - LO))); // wspolczynnik fract = procesory / zadania
 
-    // liczba zadan 50 < n < 10000
-    n = rand() % (MAX_TASK - MIN_TASK) + MIN_TASK;
-    m = (int) (fract * n);
+    tasks_n = rand() % (MAX_TASK - MIN_TASK) + MIN_TASK;
+    proc_n = (int) (fract * tasks_n);
 
-    fstream f;
-    f.open("file1", ios::out);
-    if (!f) { cerr << "File not opened" << endl; }
+    ofstream f("file1");
+    if (!f) { cerr << "File not opened" << endl; return -1; }
 
-    f << m << endl << n << endl;
+    f << proc_n << endl << tasks_n << endl;
 
-    // czasy zadan 20 << n << 500
-    for (int i = 0; i < n; i++) {
-        m = rand() % (MAX_TIME - MIN_TIME) + MIN_TIME;
-        f << m << endl;
+    for (int i = 0; i < tasks_n; i++) {
+        proc_n = rand() % (MAX_TIME - MIN_TIME) + MIN_TIME;
+        f << proc_n << endl;
     }
 
     f.close();
-
     return 0;
 }

@@ -31,30 +31,38 @@ void solve(int* prcs, int *tim, int prcs_n, int task_n){
 
 int main(){
     srand(time(NULL));
-    fstream f;
-    f.open("file1", ios::in);
-    if (!f) cerr << "No such file" << endl;
+    ifstream f("file1");
+    if (!f) { cerr << "File not opened" << endl; return -1;};
 
-    // liczba procesorów, liczba zadań
-    int proc_num, tasks_num;
-    f >> proc_num >> tasks_num;
-    int times[tasks_num], procs[proc_num];
-    for (int i = 0; i < tasks_num; i++){ f >> times[i]; }
-    for (int i = 0; i < proc_num; i++) procs[i] = 0;
+    int proc_n, tasks_n;  // liczba procesorow, zadan
+    f >> proc_n >> tasks_n;
+    int *times = new int[tasks_n];
+    int *procs = new int[proc_n];
+    for (int i = 0; i < tasks_n; i++){ f >> times[i]; }
+    for (int i = 0; i < proc_n; i++) procs[i] = 0;
 
-    quickSortE(times, 0, tasks_num-1);
+    quickSortE(times, 0, tasks_n-1);
     clock_t start, stop;
     start = clock();
-    solve(procs, times, proc_num, tasks_num);
+    solve(procs, times, proc_n, tasks_n);
     stop = clock();
 	
     cout << "Zadania: ";
-    for (int i = 0; i < proc_num; i++) cout << procs[i] << " ";
+    for (int i = 0; i < proc_n; i++) cout << procs[i] << " ";
+
 
     double a_time = (double) (stop - start) / CLOCKS_PER_SEC;
     cout << "\nCzas wykonywania: " << setprecision(1) << a_time << endl;
-    cout << "Roznica czasu miedzy najdluzszym i najkrotszym zad: " << *max_element(procs, procs + proc_num) - *min_element(procs, procs + proc_num) << endl;
 
+    int min_el = *min_element(procs, procs + proc_n), max_el = *max_element(procs, procs + proc_n);
+    cout << "Roznica czasu miedzy najdluzszym i najkrotszym zad: " << max_el - min_el << endl;
+    
+    int empty = 0;
+    for (int i = 0; i < proc_n; i++) empty += (procs[i] - min_el);
+    cout << "Niezagospodarowane jednostki czasu: " << empty << endl;
+
+    delete[] procs;
+    delete[] times;
     f.close();
     return 0;
 }
