@@ -24,7 +24,16 @@ public:
             heapify(i);
         }
     }
-    T operator[](int i){
+    MinHeap(int size){
+        array = new T[size];
+        for(int i = 0; i < size; i++){
+            array[i] = 0;
+        }
+    }
+    void fixHeap(){
+        heapify(0);
+    }
+    T &operator[](int i){
         return array[i];
     }
 };
