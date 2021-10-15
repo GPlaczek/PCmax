@@ -27,5 +27,6 @@ int main(){
     for(int i = 0; i < nProc; i++){
         cout << proc[i] << endl;
     }
+    proc.max_heap_element();
     return 0;
 }
