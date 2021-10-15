@@ -20,7 +20,7 @@ class MinHeap{
     int find_max_heap_value() {
     //iterate only through leaves
         int max_value = array[size / 2]; //first leaf
-        for(int i = (size / 2) + 1; i < size; i++) { //i = size / 2 + 1 <- second leaf
+        for(int i = (size / 2); i < size; i++) { //i = size / 2 + 1 <- second leaf
             max_value = max(max_value, array[i]);
         }
         return max_value;
@@ -35,9 +35,13 @@ public:
     }
     MinHeap(int size){
         array = new T[size];
+        this -> size = size;
         for(int i = 0; i < size; i++){
             array[i] = 0;
         }
+    }
+    ~MinHeap(){
+        delete array;
     }
     void fixHeap(){
         heapify(0);
