@@ -26,7 +26,7 @@ class MinHeap{
             }
             return max_value;
         }
-        else return array[0];
+        else return array[0]; //the only existing element is the biggest one
 
     }
 public:
