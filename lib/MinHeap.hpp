@@ -19,11 +19,15 @@ class MinHeap{
     }
     int find_max_heap_value() {
     //iterate only through leaves
-        int max_value = array[size / 2]; //first leaf
-        for(int i = (size / 2); i < size; i++) { //i = size / 2 + 1 <- second leaf
-            max_value = max(max_value, array[i]);
+        if(size > 1) {
+            int max_value = array[size / 2]; //first leaf
+            for(int i = (size / 2) + 1; i < size; i++) { //i = size / 2 + 1 <- second leaf
+                max_value = max(max_value, array[i]);
+            }
+            return max_value;
         }
-        return max_value;
+        else return array[0];
+
     }
 public:
     MinHeap(int size, T *array){
