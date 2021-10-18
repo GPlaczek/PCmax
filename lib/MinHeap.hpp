@@ -54,7 +54,10 @@ public:
         return array[i];
     }
     void max_heap_element(){
-        cout << "Czas wykonania: " << find_max_heap_value();
+        cout << find_max_heap_value() << " ";
+        cout << endl;
     }
-
+    void insertData(ofstream &f){
+        f << find_max_heap_value() << endl;
+    }
 };
