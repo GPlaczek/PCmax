@@ -7,7 +7,9 @@
 using namespace std;
 
 int main(){
-    ifstream f("file1");
+    string filename;
+    cin >> filename;
+    ifstream f(filename);
     if (!f) { cerr << "File not opened" << endl; return -1;};
 
     int nProc, nTasks;  // liczba procesorow, zadan
