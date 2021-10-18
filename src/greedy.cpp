@@ -26,9 +26,9 @@ int main(){
         proc[0] += tasks[i];
         proc.fixHeap();
     }
-    for(int i = 0; i < nProc; i++){
+    /*for(int i = 0; i < nProc; i++){
         cout << proc[i] << endl;
-    }
+    }*/
     proc.max_heap_element();
     return 0;
 }
