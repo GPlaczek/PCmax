@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "PCmax.hpp"
+#include "../lib/PCmax.hpp"
 
 using namespace std;
 

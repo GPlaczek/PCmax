@@ -1,5 +1,5 @@
 #include "../lib/MinHeap.hpp"
-#include "PCmax.hpp"
+#include "../lib/PCmax.hpp"
 
 int PCmax::greedy(int nProc, int nTasks, int *tasks){
     MinHeap<int> proc(nProc);
