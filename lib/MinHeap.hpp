@@ -17,18 +17,7 @@ class MinHeap{
             }else break;
         }
     }
-    int find_max_heap_value() {
-    //iterate only through leaves
-        if(size > 1) {
-            int max_value = array[size / 2]; //first leaf
-            for(int i = (size / 2) + 1; i < size; i++) { //i = size / 2 + 1 <- second leaf
-                max_value = max(max_value, array[i]);
-            }
-            return max_value;
-        }
-        else return array[0]; //the only existing element is the biggest one
-
-    }
+    
 public:
     MinHeap(int size, T *array){
         this -> array = array;
@@ -53,8 +42,15 @@ public:
     T &operator[](int i){
         return array[i];
     }
-    void max_heap_element(){
-        cout << "Czas wykonania: " << find_max_heap_value() << endl;
+    int maxValue(){
+    //iterate only through leaves
+        if(size > 1) {
+            int max_value = array[size / 2]; //first leaf
+            for(int i = (size / 2) + 1; i < size; i++) { //i = size / 2 + 1 <- second leaf
+                max_value = max(max_value, array[i]);
+            }
+            return max_value;
+        }
+        else return array[0]; //the only existing element is the biggest one
     }
-
 };
