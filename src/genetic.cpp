@@ -1,9 +1,11 @@
 #include "../lib/PCmax.hpp"
 #include <iostream>
-#include <vector>
 #include <random>
 
 using namespace std;
+
+
+
 
 int PCmax::genetic(int nProcs, int nTasks, int *tasks){
     // Tu kiedyś zadzieje się magia
@@ -11,46 +13,8 @@ int PCmax::genetic(int nProcs, int nTasks, int *tasks){
     vector <int> *processors = new vector <int>[nProcs];
 
     //zeruję zerowy indeks każdego z procesorów - to będzie suma długości zadań na każdym procesorze
-    for (int i = 0; i < nProcs; i++) {
-        processors[i].push_back(0);
-    }
-
-    //randomowa liczba z przedziału od 0 do liczba procesorów - 1
-    //https://www.delftstack.com/howto/cpp/generate-random-number-in-range-cpp/ - warto przeczytać
-    random_device rd; // obtain a random number from hardware
-    mt19937 gen(rd()); // seed the generator
-    uniform_int_distribution<int> distr(0, nProcs - 1); // define the range
-
-    //każdy proces dodaję do randomowo wybranego procesora
-    for (int i = 0; i < nTasks; i++) {
-        int rand_num = distr(gen);
-        processors[rand_num].push_back(tasks[i]);
-        processors[rand_num][0] += tasks[i];
-        //aktualizuję maksymalną wartość na bieżąco
-        if (processors[rand_num][0] > max) {
-            max = processors[rand_num][0];
-            max_index = rand_num;
-        }
-    }
-
-    //szukam min wartości sumy
-    int min = processors[0][0]; //ustawiam min na pierwszą sumę 
-    int min_index = 0; //indeks minimalnej sumy w tablicy processors
-    for (int i = 1; i < nProcs; i++) {
-        if (processors[i][0] < min) {
-            min = processors[i][0];
-            min_index = i;
-        }
-    }
-        
-    //int difference = max - min;
-    //dążę do tego, żeby nowa różnica max - min była lepsza od poprzedniej (wartości będą "bliżej" siebie)
-    //while (processors[max][0] - processors[min][0] < difference) {
-  
-    //}
-    
     //wykonuję zamianę 5 razy, bo tak mi się zachciało
-    for (int j = 0; j < 5; j++) {
+    /*for (int j = 0; j < 5; j++) {
         //ilość procesów tablicy processors o indeksie max - przedział od 1 (bo bez sumy)
         uniform_int_distribution<int> rand_process(1, processors[max_index].size() - 1);
         //randomowy indeks procesu
@@ -77,6 +41,55 @@ int PCmax::genetic(int nProcs, int nTasks, int *tasks){
             }
         }
     }
-
+    */
     return max;
+}
+
+int PCmax::evaluate(vector<int> *shuffle, int nProc){
+    // Funkcja oceniająca wartość uszeregowania procesów (maksymalny czas na procesorze - minimalny czas na procesorze)
+    int max = shuffle[0][0];
+    int min = shuffle[0][0];
+    for(int i = 1; i < nProc; i++){
+        if(shuffle[i][0] > max) max = shuffle[i][0];
+        else if(shuffle[i][0] < min) min = shuffle[i][0];
+    }
+    return max - min;
+}
+
+vector<int> *PCmax::populate(int nProc, int nTasks, int *tasks, int populationSize){
+    random_device rd; // obtain a random number from hardware
+    mt19937 gen(rd()); // seed the generator
+    uniform_int_distribution<int> distr(0, nProc - 1); // define the range
+
+    vector<int> **shuffles = new vector<int>*[populationSize];
+    int value, minValue, bestIndex = 0;
+    shuffles[0] = new vector<int>[nProc];
+    for (int i = 0; i < nProc; i++) {
+        shuffles[0][i].push_back(0);
+    }
+    for(int i = 0; i < nProc; i++){
+        int rand_num = distr(gen);
+        shuffles[0][rand_num].push_back(tasks[i]);
+        shuffles[0][rand_num][0] += tasks[i];
+    }
+    minValue = evaluate(shuffles[0], nProc);
+
+    for(int i = 1; i < populationSize; i++){
+        shuffles[i] = new vector<int>[nProc];
+        for (int j = 0; j < nProc; j++) {
+            shuffles[i][j].push_back(0);
+        }
+ 
+        for(int j = 0; j < nTasks; j++){
+            int rand_num = distr(gen);
+            shuffles[i][rand_num].push_back(tasks[j]);
+            shuffles[i][rand_num][0] += tasks[j];
+        }
+        if((value = evaluate(shuffles[i], nProc) < minValue)){
+            minValue = value;
+            bestIndex = i;
+        }
+    }
+    // chyba trzeba dynamicznie jakoś usunąć tą tablicę wektorów ale nie wiem
+    return shuffles[bestIndex];
 }
