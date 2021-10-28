@@ -4,10 +4,7 @@
 
 using namespace std;
 
-
-
-
-int PCmax::genetic(int nProcs, int nTasks, int *tasks){
+int genetic(int nProcs, int nTasks, int *tasks){
     // Tu kiedyś zadzieje się magia
     int max = 0, max_index = -1;
     vector <int> *processors = new vector <int>[nProcs];
@@ -61,35 +58,40 @@ vector<int> *PCmax::populate(int nProc, int nTasks, int *tasks, int populationSi
     mt19937 gen(rd()); // seed the generator
     uniform_int_distribution<int> distr(0, nProc - 1); // define the range
 
-    vector<int> **shuffles = new vector<int>*[populationSize];
-    int value, minValue, bestIndex = 0;
-    shuffles[0] = new vector<int>[nProc];
+    // Tablica na aktualne uszeregowanie i na najlepsze dotychczasowe uszeregowanie
+    vector<int> *bestShuffle = new vector<int>[nProc];
+    vector<int> *shuffle;
+    int value, minValue; // zmienne przechowujące najlepszą dotychczasową wartość i aktualną wartość
+
+    // Wartość pierwszego uszeregowania jest na początku najlepsza
     for (int i = 0; i < nProc; i++) {
-        shuffles[0][i].push_back(0);
+        bestShuffle[i].push_back(0);
     }
-    for(int i = 0; i < nProc; i++){
+    for(int i = 0; i < nTasks; i++){
         int rand_num = distr(gen);
-        shuffles[0][rand_num].push_back(tasks[i]);
-        shuffles[0][rand_num][0] += tasks[i];
+        bestShuffle[rand_num].push_back(tasks[i]);
+        bestShuffle[rand_num][0] += tasks[i];
     }
-    minValue = evaluate(shuffles[0], nProc);
+    minValue = evaluate(bestShuffle, nProc);
 
     for(int i = 1; i < populationSize; i++){
-        shuffles[i] = new vector<int>[nProc];
+        // Generowanie kolejno nowych uszeregowań
+        shuffle = new vector<int>[nProc];
         for (int j = 0; j < nProc; j++) {
-            shuffles[i][j].push_back(0);
+            shuffle[j].push_back(0);
         }
- 
         for(int j = 0; j < nTasks; j++){
             int rand_num = distr(gen);
-            shuffles[i][rand_num].push_back(tasks[j]);
-            shuffles[i][rand_num][0] += tasks[j];
+            shuffle[rand_num].push_back(tasks[j]);
+            shuffle[rand_num][0] += tasks[j];
         }
-        if((value = evaluate(shuffles[i], nProc) < minValue)){
+        value = evaluate(shuffle, nProc);
+        if(value < minValue){
+            // Jeśli nowe uszeregowanie jest najlepsze to podmieniamy
             minValue = value;
-            bestIndex = i;
+            for(int a = 0; a < nProc; a++) bestShuffle[a] = move(shuffle[a]);
         }
+        delete [] shuffle; // czyszczenie tablicy po każdej iteracji
     }
-    // chyba trzeba dynamicznie jakoś usunąć tą tablicę wektorów ale nie wiem
-    return shuffles[bestIndex];
+    return bestShuffle;
 }
