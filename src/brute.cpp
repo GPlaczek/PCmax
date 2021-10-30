@@ -35,5 +35,6 @@ int PCmax::brute(int nProcs, int nTasks, int *tasks){
     vector<int> procID(nProcs), permuts(nTasks);
     for (int i = 0; i < nProcs; i++) procID[i] = i+1;
     permute(procID, permuts, tasks, 0);
-    cout << cmax << endl;
+    
+    return cmax;
 }

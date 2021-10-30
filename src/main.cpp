@@ -18,6 +18,6 @@ int main(){
     for(int i = 0; i < nTasks; i++) f >> tasks[i];
     f.close();
     // cout << PCmax::genetic(nProc, nTasks, tasks) << endl;
-    cout << PCmax::brute(nProc, nTasks, tasks);
+    cout << PCmax::brute(nProc, nTasks, tasks) << endl;
     return 0;
 }
