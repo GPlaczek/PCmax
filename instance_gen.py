@@ -5,12 +5,11 @@ import subprocess
 LO = 0.2
 HI = 0.5
 MIN_TASK = 50
-MAX_TASK = 10000
-MIN_TIME = 20
-MAX_TIME = 500
+MAX_TASK = 500
+MIN_TIME = 50
+MAX_TIME = 200
 N_INSTANCES = 10
 INST_DIR = 'instances'
-
 
 def mkdir(dir):
     try:
