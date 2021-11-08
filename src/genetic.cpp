@@ -14,18 +14,19 @@ int PCmax::genetic(int nProcs, int nTasks, int *tasks){
     for(int i = 0; i < GENERATIONS; i++){
         child = repopulate(strongest, nProcs, POPULATION_SIZE, SHUFFLES);
         if(evaluate(child, nProcs) < evaluate(strongest, nProcs)){
-            delete [] strongest;
-            strongest = new vector<int>[nProcs];
+            // delete [] strongest; // nie mam pewności czy te dwie linijki nie są konieczne
+            // strongest = new vector<int>[nProcs];
             for(int j = 0; j < nProcs; j++){
                 strongest[j] = move(child[j]);
             }
             delete [] child;
         }
     }
-    int max = strongest[0][0];
+   int max = strongest[0][0];
     for(int i = 0; i < nProcs; i++){
         if(strongest[i][0] > max) max = strongest[i][0];
     }
+    delete [] strongest;
     return max;
 }
 
@@ -88,16 +89,19 @@ vector<int> *PCmax::repopulate(vector<int> *parent, int nProc, int populationSiz
     random_device rd; // obtain a random number from hardware
     mt19937 gen(rd()); // seed the generator
     uniform_int_distribution<int> distr(0, nProc - 1); // define the range
+
     int firstProc, secondProc, longerProc, shorterProc;
-    vector<int> *bestChild = NULL;
+    vector<int> *bestChild = parent;
     vector<int> *child;
+    int value, bestValue = evaluate(parent, nProc);
+
     for(int i = 0; i < populationSize; i++){
         child = new vector<int>[nProc];
         for(int j = 0; j < nProc; j++){ child[j] = parent[j]; } // kopiowanie uszeregowania
         for(int j = 0; j < shuffles; j++){
             firstProc = distr(gen);
             secondProc = distr(gen);
-            if(firstProc == secondProc) continue;
+            if(firstProc == secondProc) continue; // można to podpisać pod te mutacje z genetica
             if(child[firstProc] > child[secondProc]){
                 longerProc = firstProc;
                 shorterProc = secondProc;
@@ -106,7 +110,7 @@ vector<int> *PCmax::repopulate(vector<int> *parent, int nProc, int populationSiz
                 shorterProc = firstProc;
             }else continue;
 
-            uniform_int_distribution<int> distr_1(0, child[longerProc].size()-1);
+            uniform_int_distribution<int> distr_1(1, child[longerProc].size()-1);
             int task = distr_1(gen);
             swap(child[longerProc][task], child[longerProc].back());
             child[longerProc][0] -= child[longerProc].back();
@@ -114,9 +118,11 @@ vector<int> *PCmax::repopulate(vector<int> *parent, int nProc, int populationSiz
             child[shorterProc].push_back(child[longerProc].back());
             child[longerProc].pop_back();
         }
-        if(i == 0 || evaluate(child, nProc) < evaluate(bestChild, nProc)){
-            delete [] bestChild;
-            bestChild = new vector<int>[nProc];
+        value = evaluate(child, nProc);
+        if(value < bestValue){
+            bestValue = value;
+            // delete [] bestChild; // tu tak samo nie wiem czy brak tych dwóch linijek nie spowoduje memory leaka
+            // bestChild = new vector<int>[nProc];
             for(int j = 0; j < nProc; j++){
                 bestChild[j] = move(child[j]);
             }
