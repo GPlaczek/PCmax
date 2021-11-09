@@ -17,6 +17,7 @@ int PCmax::genetic(int nProcs, int nTasks, int *tasks){
             // delete [] strongest; // nie mam pewności czy te dwie linijki nie są konieczne
             // strongest = new vector<int>[nProcs];
             for(int j = 0; j < nProcs; j++){
+                strongest[j].clear();
                 strongest[j] = move(child[j]);
             }
             delete [] child;
@@ -78,7 +79,10 @@ vector<int> *PCmax::populate(int nProc, int nTasks, int *tasks, int populationSi
         if(value < minValue){
             // Jeśli nowe uszeregowanie jest najlepsze to podmieniamy
             minValue = value;
-            for(int a = 0; a < nProc; a++) bestOrdering[a] = move(ordering[a]);
+            for(int a = 0; a < nProc; a++){
+                bestOrdering[a].clear();
+                bestOrdering[a] = move(ordering[a]);
+            }
         }
         delete [] ordering; // czyszczenie tablicy po każdej iteracji
     }
@@ -124,6 +128,7 @@ vector<int> *PCmax::repopulate(vector<int> *parent, int nProc, int populationSiz
             // delete [] bestChild; // tu tak samo nie wiem czy brak tych dwóch linijek nie spowoduje memory leaka
             // bestChild = new vector<int>[nProc];
             for(int j = 0; j < nProc; j++){
+                bestChild[j].clear();
                 bestChild[j] = move(child[j]);
             }
         }
