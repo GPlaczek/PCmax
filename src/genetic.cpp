@@ -2,15 +2,14 @@
 #include <iostream>
 #include <random>
 
-#define POPULATION_SIZE 150
-#define GENERATIONS 20
-
 using namespace std;
 
 int PCmax::genetic(int nProcs, int nTasks, int *tasks){
+    const int POPULATION_SIZE = nTasks/2;
+    const int GENERATIONS = nProcs*8;
+    const int SHUFFLES = nProcs/4;
     vector<int> *strongest = populate(nProcs, nTasks, tasks, POPULATION_SIZE);
     vector<int> *child;
-    const int SHUFFLES = 2*nProcs;
     for(int i = 0; i < GENERATIONS; i++){
         child = repopulate(strongest, nProcs, POPULATION_SIZE, SHUFFLES);
         if(evaluate(child, nProcs) < evaluate(strongest, nProcs)){
