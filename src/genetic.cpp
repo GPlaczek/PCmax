@@ -5,9 +5,9 @@
 using namespace std;
 
 int PCmax::genetic(int nProcs, int nTasks, int *tasks){
-    const int POPULATION_SIZE = nTasks/2;
+    const int POPULATION_SIZE = 40;
     const int GENERATIONS = nProcs*8;
-    const int SHUFFLES = nProcs/4;
+    const int SHUFFLES = nProcs/8;
     vector<int> *strongest = populate(nProcs, nTasks, tasks, POPULATION_SIZE);
     vector<int> *child;
     for(int i = 0; i < GENERATIONS; i++){
@@ -33,12 +33,10 @@ int PCmax::genetic(int nProcs, int nTasks, int *tasks){
 int PCmax::evaluate(vector<int> *shuffle, int nProc){
     // Funkcja oceniająca wartość uszeregowania procesów (maksymalny czas na procesorze - minimalny czas na procesorze)
     int max = shuffle[0][0];
-    int min = shuffle[0][0];
     for(int i = 1; i < nProc; i++){
         if(shuffle[i][0] > max) max = shuffle[i][0];
-        else if(shuffle[i][0] < min) min = shuffle[i][0];
     }
-    return max - min;
+    return max;
 }
 
 vector<int> *PCmax::populate(int nProc, int nTasks, int *tasks, int populationSize){
@@ -93,33 +91,27 @@ vector<int> *PCmax::repopulate(vector<int> *parent, int nProc, int populationSiz
     mt19937 gen(rd()); // seed the generator
     uniform_int_distribution<int> distr(0, nProc - 1); // define the range
 
-    int firstProc, secondProc, longerProc, shorterProc;
     vector<int> *bestChild = parent;
     vector<int> *child;
     int value, bestValue = evaluate(parent, nProc);
 
+    child = new vector<int>[nProc];
     for(int i = 0; i < populationSize; i++){
-        child = new vector<int>[nProc];
         for(int j = 0; j < nProc; j++){ child[j] = parent[j]; } // kopiowanie uszeregowania
         for(int j = 0; j < shuffles; j++){
-            firstProc = distr(gen);
-            secondProc = distr(gen);
-            if(firstProc == secondProc) continue; // można to podpisać pod te mutacje z genetica
-            if(child[firstProc] > child[secondProc]){
-                longerProc = firstProc;
-                shorterProc = secondProc;
-            }else if(child[firstProc] < child[secondProc]){
-                longerProc = secondProc;
-                shorterProc = firstProc;
-            }else continue;
-
-            uniform_int_distribution<int> distr_1(1, child[longerProc].size()-1);
-            int task = distr_1(gen);
-            swap(child[longerProc][task], child[longerProc].back());
-            child[longerProc][0] -= child[longerProc].back();
-            child[shorterProc][0] += child[longerProc].back();
-            child[shorterProc].push_back(child[longerProc].back());
-            child[longerProc].pop_back();
+            int min = 0;
+            int max = 0;
+            for(int k = 1; k < nProc; k++){
+                if(child[k][0] > child[max][0]) max = k;
+                else if(child[k][0] < child[min][0]) min = k;
+            }
+            uniform_int_distribution<int> distr(1, child[max].size() - 1);
+            int elem = distr(gen);
+            swap(child[max].back(), child[max][elem]);
+            child[min].push_back(child[max].back());
+            child[min][0]+=child[max].back();
+            child[max][0]-=child[max].back();
+            child[max].pop_back();
         }
         value = evaluate(child, nProc);
         if(value < bestValue){
@@ -130,8 +122,11 @@ vector<int> *PCmax::repopulate(vector<int> *parent, int nProc, int populationSiz
                 bestChild[j].clear();
                 bestChild[j] = move(child[j]);
             }
+        }else{
+            for(int j = 0; j < nProc; j++){
+                child[j].clear();
+            }
         }
-        delete [] child;
     }
     return bestChild;
 }
