@@ -8,22 +8,38 @@ New line-ups in a generation are built in a following way based on the best line
 
 1. Processors with the longest and the shortest execution times are searched within the array
 2. A random process from the longer processor is put into the shorter processor
-3. This process is repeated *x* times ( *x* is a parameter, which can be adjusted)
+3. This process is repeated *x* times (*x* is a parameter, which can be adjusted)
 
 While creating the population, algorithm only memorizes the current line-up and the best line-up so far (which is determined by the P||C<sub>max</sub>). Once the population is done building, we have te best line-up from that population and if it is better than the base line-up, the new line-up is a base for the next generation.
 
 ## Pseudocode
-1. For number of processes:
+1. For size of population:
 
-    1.1 Assign process to random processor
+    1.1. For number of processes:
+
+        1.1.1 Assign process to random processor
     
-    1.2 Add to execution time of this processor duration of current process
+        1.1.2 Add to execution time of this processor duration of current process
 
-2. For *x* times ( *x* is a parameter, which can be adjusted):
+2. For number of generations:
+
+    2.1. For size of population:
+
+        2.1.1. Best new line up is base line-up
+
+        2.1.2. For *x* times (*x* is a parameter, which can be adjusted):
     
-    2.1. Find max and min execution time for every processor
+            2.1.1.1. Find max and min execution time for every processor
 
-    2.2. From processor with max execution time and transfer random process to min processor
+            2.1.1.2. From processor with max execution time and transfer random process to min processor
+
+        2.1.3. If new line-up is better than best new line-up:
+
+            2.1.2.1. Best new line-up is now new line-up
+
+    2.2. If best line-up from new population is better than base line-up:
+        
+        2.2.1. Base line-up is best new line-up from new population
 
 ## Authors
 - Grzegorz Płaczek (148071)
