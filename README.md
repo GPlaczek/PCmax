@@ -13,6 +13,8 @@ New line-ups in a generation are built in a following way based on the best line
 While creating the population, algorithm only memorizes the current line-up and the best line-up so far (which is determined by the P||C<sub>max</sub>). Once the population is done building, we have te best line-up from that population and if it is better than the base line-up, the new line-up is a base for the next generation.
 
 ## Pseudocode
+```
+
 1. For size of population:
 
     1.1. For number of processes:
@@ -40,6 +42,7 @@ While creating the population, algorithm only memorizes the current line-up and 
     2.2. If best line-up from new population is better than base line-up:
         
         2.2.1. Base line-up is best new line-up from new population
+```
 
 ## Authors
 - Grzegorz Płaczek (148071)
