@@ -54,5 +54,4 @@ dkms.conf
 bin/
 outputs/
 instances/
-plots/
-.ipynb_checkpoints/
+.ipynb_checkpoints
