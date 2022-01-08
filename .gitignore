@@ -56,5 +56,3 @@ outputs/
 instances/
 plots/
 .ipynb_checkpoints/
-
-*.txt

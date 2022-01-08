@@ -17,7 +17,7 @@ bool checkFile(T &f){
 int main(){
     int INSTANCES = 10;
     for (int i = 1; i <= INSTANCES; i++){
-        string benchmark = "../instances/benchmark_";
+        string benchmark = "instances/benchmark_";
         benchmark += to_string(i);
         cout << benchmark << endl;
         ifstream f(benchmark);
@@ -29,8 +29,8 @@ int main(){
         for(int i = 0; i < nTasks; i++) f >> tasks[i];
         f.close();
 
-        string evInstanceName = "../outputs/ev/evolutional_";
-        string grInstanceName = "../outputs/gr/greedy_";
+        string evInstanceName = "outputs/ev/evolutional_";
+        string grInstanceName = "outputs/gr/greedy_";
         evInstanceName += to_string(i);
         grInstanceName += to_string(i);
 
