@@ -1,13 +1,18 @@
+import sys
 import random
+
+file = str(sys.argv[1])
 
 # Cmax > nTasks
 # nTask % nProc = 0
 
-INSTANCES = 10
-inst = [[int(el) for el in input().split()] for _ in range(INSTANCES)]
-# na wejsciu kolejno po spacji liczba procesorow, liczba zadan, Cmax
+with open(file) as f:
+    inst = [[int(el) for el in line[:-1].split()] for line in f.readlines()]
+    
+# odczyt z pliku kolejno po spacji liczba procesorow, liczba zadan, Cmax
 # w kazdej linii dane dla kolejnej instancji
 
+INSTANCES = len(inst)
 for i in range(INSTANCES):
 
     nProc = inst[i][0]
