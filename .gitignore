@@ -450,4 +450,5 @@ res/bin/
 res/outputs/
 res/instances/
 instances/
+outputs/
 res/.*
