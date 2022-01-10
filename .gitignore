@@ -446,3 +446,6 @@ FodyWeavers.xsd
 .idea/
 *.sln.iml
 
+res/bin/
+res/outputs/
+res/instances/
