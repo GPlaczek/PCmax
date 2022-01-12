@@ -10,7 +10,7 @@ New line-ups in a generation are built in a following way based on the best line
 2. A random process from the longer processor is put into the shorter processor
 3. This process is repeated *x* times (*x* is a parameter, which can be adjusted)
 
-While creating the population, algorithm only memorizes the current line-up and the best line-up so far (which is determined by the P||C<sub>max</sub>). Once the population is done building, we have te best line-up from that population and if it is better than the base line-up, the new line-up is a base for the next generation.
+While creating the population, algorithm only memorizes the current line-up and the best line-up so far (which is determined by the P||C<sub>max</sub>). Once the population is done building, we have the best line-up from that population and if it is better than the base line-up, the new line-up is a base for the next generation.
 
 ## Pseudocode
 ```
