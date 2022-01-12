@@ -29,7 +29,7 @@ int main(){
         for(int i = 0; i < nTasks; i++) f >> tasks[i];
         f.close();
 
-        string evInstanceName = "outputs/ev/evolutional_";
+        string evInstanceName = "outputs/ev/evolutionary_";
         string grInstanceName = "outputs/gr/greedy_";
         evInstanceName += to_string(i);
         grInstanceName += to_string(i);
@@ -43,7 +43,7 @@ int main(){
         
         // cout << "CMAX : " << Cmax << endl << endl;
         cout << evInstanceName  << "..." << endl;
-        vector<int>* E = PCmax::evolutional(nProc, nTasks, tasks);
+        vector<int>* E = PCmax::evolutionary(nProc, nTasks, tasks);
         // E = PCmax::evolutional(nProc, nTasks, tasks);
         cout << grInstanceName  << "..." << endl;
         vector<int> G = PCmax::greedy(nProc, nTasks, tasks);

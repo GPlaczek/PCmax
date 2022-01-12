@@ -4,10 +4,10 @@
 
 using namespace std;
 
-int PCmax::genetic(int nProcs, int nTasks, int *tasks){
-    const int POPULATION_SIZE = 1000;
-    const int GENERATIONS = nProcs*100;
-    const int SHUFFLES = nProcs/8;
+vector<int> *PCmax::evolutionary(int nProcs, int nTasks, int *tasks){
+    const int POPULATION_SIZE = 40; // 100
+    const int GENERATIONS = nProcs*8; // 16
+    const int SHUFFLES = nProcs/8; // 2
     vector<int> *strongest = populate(nProcs, nTasks, tasks, POPULATION_SIZE);
     vector<int> *child;
     for(int i = 0; i < GENERATIONS; i++){
@@ -22,12 +22,14 @@ int PCmax::genetic(int nProcs, int nTasks, int *tasks){
             delete [] child;
         }
     }
-   int max = strongest[0][0];
+   
+    /*int max = strongest[0][0];
     for(int i = 0; i < nProcs; i++){
         if(strongest[i][0] > max) max = strongest[i][0];
     }
     delete [] strongest;
-    return max;
+    return max;*/
+    return strongest;
 }
 
 int PCmax::evaluate(vector<int> *shuffle, int nProc){

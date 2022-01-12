@@ -10,7 +10,7 @@ class PCmax{
     static vector<int> *populate(int, int, int*, int);
     static vector<int> *repopulate(vector<int>*, int, int, int);
 public:
-    static int genetic(int, int, int*);
+    static int evolutionary(int, int, int*);
     static int greedy(int, int, int*);
     static int brute(int, int, int*);
 };
