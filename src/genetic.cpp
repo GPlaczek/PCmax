@@ -5,8 +5,8 @@
 using namespace std;
 
 int PCmax::genetic(int nProcs, int nTasks, int *tasks){
-    const int POPULATION_SIZE = 40;
-    const int GENERATIONS = nProcs*8;
+    const int POPULATION_SIZE = 1000;
+    const int GENERATIONS = nProcs*100;
     const int SHUFFLES = nProcs/8;
     vector<int> *strongest = populate(nProcs, nTasks, tasks, POPULATION_SIZE);
     vector<int> *child;
